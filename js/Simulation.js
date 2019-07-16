@@ -56,9 +56,9 @@ var Simulator = function(canvas, width, height) {
     var cubeDataTop = [];
     for (var zIndex = 0; zIndex < GEOMETRY_RESOLUTION * 5; zIndex += 1) {
         for (var xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
-            cubeDataTop.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[0] - GEOMETRY_SIZE / 2.0);
-            cubeDataTop.push(GEOMETRY_SIZE / 2.0);
-            cubeDataTop.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2] - GEOMETRY_SIZE * 5.0 / 2.0);
+            cubeDataTop.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[0]);
+            cubeDataTop.push(GEOMETRY_ORIGIN[1] + GEOMETRY_SIZE);
+            cubeDataTop.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2]);
             cubeDataTop.push((0.0));
         }
     }
@@ -67,9 +67,9 @@ var Simulator = function(canvas, width, height) {
     var cubeDataLeft = [];
     for (var zIndex = 0; zIndex < GEOMETRY_RESOLUTION * 5; zIndex += 1) {
         for (var yIndex = 0; yIndex < GEOMETRY_RESOLUTION; yIndex += 1) {
-            cubeDataLeft.push(-GEOMETRY_SIZE / 2.0);
-            cubeDataLeft.push((yIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[1] - GEOMETRY_SIZE / 2.0);
-            cubeDataLeft.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2] - GEOMETRY_SIZE * 5.0 / 2.0);
+            cubeDataLeft.push(GEOMETRY_ORIGIN[0]);
+            cubeDataLeft.push((yIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[1]);
+            cubeDataLeft.push((zIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2]);
             cubeDataLeft.push((0.0));
         }
     }
@@ -78,9 +78,9 @@ var Simulator = function(canvas, width, height) {
     var cubeDataFront = [];
     for (var xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
         for (var yIndex = 0; yIndex < GEOMETRY_RESOLUTION; yIndex += 1) {
-            cubeDataFront.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[0] - GEOMETRY_SIZE / 2.0);
-            cubeDataFront.push((yIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[1] - GEOMETRY_SIZE / 2.0);
-            cubeDataFront.push((GEOMETRY_RESOLUTION * 5 - 1) * GEOMETRY_SIZE / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2] - GEOMETRY_SIZE * 5.0 / 2.0);
+            cubeDataFront.push((xIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[0]);
+            cubeDataFront.push((yIndex * GEOMETRY_SIZE) / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[1]);
+            cubeDataFront.push((GEOMETRY_RESOLUTION * 5 - 1) * GEOMETRY_SIZE / (GEOMETRY_RESOLUTION - 1) + GEOMETRY_ORIGIN[2]);
             cubeDataFront.push((0.0));
         }
     }

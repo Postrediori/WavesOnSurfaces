@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html>
+    <head>
+        <title>Elastic Surface Waves</title>
+
+        <meta name="description" content="A simulation of elastic waves on surfaces written in JavaScript using WebGL" />
+
+        <meta charset="utf-8" />
+
+        <link type="text/css" href="css/index.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div id="hud"><a href="https://postrediori.github.io">Rasim Labibov</a> | <a href="https://github.com/Postrediori/WebGlCube">Code</a></div>
+
+
+        <div id="info-blocks">
+            <div class="info-block" id="love-wave-info">
+                <h3>Love Wave in Elastic Solid</h3>
+                <p>Depiction of the propagation of a Love wave, named after
+                <a href="https://en.wikipedia.org/wiki/Augustus_Edward_Hough_Love">Augustus Edward Hough Love</a>.
+                The particles vibrate perpendicularly to the direction of propagation
+                and the amplitude decays with depth.</p>
+            </div>
+            <div class="info-block" id="controls-info">
+                <p><span>Drag mouse</span> to rotate camera</p>
+            </div>
+        </div>
+
+        <div id="overlay"></div>
+        <div id="ui"></div>
+        <canvas id="simulator"></canvas>
+
+        <script type="text/javascript" src="js/Shared.js"></script>
+        <script type="text/javascript" src="js/Camera.js"></script>
+        <script type="text/javascript" src="js/Simulation.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+
+        <noscript>Enable JavaScript!</noscript>
+    </body>
+</html>

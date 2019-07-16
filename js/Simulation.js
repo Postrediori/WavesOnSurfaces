@@ -37,7 +37,8 @@ var Simulator = function(canvas, width, height) {
     var currentTime = 0.0,
         waveAmplitude = INITIAL_AMPLITUDE,
         waveVelocity = INITIAL_VELOCITY,
-        wavePeriod = INITIAL_PERIOD;
+        wavePeriod = INITIAL_PERIOD,
+        waveDissipation = INITIAL_DISSIPATION;
 
     gl.clearColor.apply(gl, CLEAR_COLOR);
     gl.enable(gl.DEPTH_TEST);
@@ -213,7 +214,7 @@ var Simulator = function(canvas, width, height) {
         var depth = GEOMETRY_SIZE / 2.0 - coord[Y_INDEX];
         var delta = depth / GEOMETRY_SIZE;
 
-        outDisplacement[X_INDEX] = waveAmplitude * (1.0 - delta) *
+        outDisplacement[X_INDEX] = waveAmplitude * Math.exp(-waveDissipation * delta) *
             Math.cos(wavePeriod * coord[Z_INDEX] - waveVelocity * t);
         outDisplacement[Y_INDEX] = 0.0;
         outDisplacement[Z_INDEX] = 0.0;

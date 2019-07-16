@@ -6,7 +6,8 @@
 
 var INITIAL_AMPLITUDE = 1.5,
     INITIAL_VELOCITY = -5.0,
-    INITIAL_PERIOD = 5.0;
+    INITIAL_PERIOD = 5.0,
+    INITIAL_DISSIPATION = 1.5;
 
 var OVERLAY_DIV_ID = 'overlay',
     UI_DIV_ID = 'ui',

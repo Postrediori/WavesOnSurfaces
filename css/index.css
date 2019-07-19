@@ -27,10 +27,16 @@ canvas {
 
 #hud {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 20px;
+  right: 20px;
+
+  text-align: right;
+
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
   z-index: 3;
-  padding: 10px;
 }
 
 #hud a {
@@ -46,6 +52,46 @@ canvas {
 #hud a:visited {
   color: #333333;
 }
+
+#velocity-wrapper {
+  margin-top: 20px;
+  line-height: 0;
+}
+
+#dissipation-wrapper {
+  margin-top: 20px;
+  line-height: 0;
+}
+
+#period-wrapper {
+  margin-top: 20px;
+  line-height: 0;
+}
+
+.slider {
+  width: 200px;
+  height: 25px;
+  background-color: #eeeeee;
+  display: inline-block;
+  position: relative;
+  cursor: ew-resize;
+}
+
+.label {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 900;
+  color: #333333;
+  font-size: 18px;
+
+  margin-right: 8px;
+
+  vertical-align: top;
+
+  pointer-events: none;
+
+  line-height: 25px;
+}
+
 
 div#info-blocks {
   position: absolute;

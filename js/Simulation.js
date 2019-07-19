@@ -35,7 +35,7 @@ var Simulator = function(canvas, width, height) {
     var currentTime = 0.0,
         waveAmplitude = INITIAL_AMPLITUDE,
         waveVelocity = INITIAL_VELOCITY,
-        wavePeriod = INITIAL_PERIOD,
+        wavePeriod = 1.0 / INITIAL_PERIOD,
         waveDissipation = INITIAL_DISSIPATION;
 
     gl.clearColor.apply(gl, CLEAR_COLOR);
@@ -191,6 +191,18 @@ var Simulator = function(canvas, width, height) {
     var cubeOutlineIndexBufferFront = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeOutlineIndexBufferFront);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeOutlineIndicesFront), gl.STATIC_DRAW);
+
+    this.setVelocity = function (newVelocity) {
+        waveVelocity = newVelocity;
+    };
+
+    this.setPeriod = function (newPeriod) {
+        wavePeriod = 1.0 / newPeriod;
+    };
+
+    this.setDissipation = function (newDissipation) {
+        waveDissipation = newDissipation;
+    };
 
     this.resize = function (width, height) {
         canvas.width = width;

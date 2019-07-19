@@ -7,6 +7,18 @@ var main = function () {
 
     var simulator = new Simulator(simulatorCanvas, 640, 480);
 
+    var velocitySlider = new Slider(document.getElementById('velocity-slider'), 0.0, MAX_VELOCITY, INITIAL_VELOCITY, function (value) {
+        simulator.setVelocity(value);
+    });
+
+    var periodSlider = new Slider(document.getElementById('period-slider'), MIN_PERIOD, MAX_PERIOD, INITIAL_PERIOD, function (value) {
+        simulator.setPeriod(value);
+    });
+
+    var dissipationSlider = new Slider(document.getElementById('dissipation-slider'), 0.0, MAX_DISSIPATION, INITIAL_DISSIPATION, function (value) {
+        simulator.setDissipation(value);
+    });
+
     var camera = new Camera();
     var projectionMatrix = makePerspectiveMatrix(new Float32Array(16), FOV, MIN_ASPECT, NEAR, FAR);
     

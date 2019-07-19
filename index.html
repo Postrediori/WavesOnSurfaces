@@ -12,8 +12,19 @@
     </head>
 
     <body>
-        <div id="hud"><a href="https://postrediori.github.io">Rasim Labibov</a> | <a href="https://github.com/Postrediori/WavesOnSurfaces">Code</a></div>
 
+        <div id="hud">
+            <a href="https://postrediori.github.io">Rasim Labibov</a> | <a href="https://github.com/Postrediori/WavesOnSurfaces">Code</a>
+            <div id="velocity-wrapper">
+                <span class="label">VELOCITY</span><div id="velocity-slider" class="slider"></div>
+            </div>
+            <div id="period-wrapper">
+                <span class="label">PERIOD</span><div id="period-slider" class="slider"></div>
+            </div>
+            <div id="dissipation-wrapper">
+                <span class="label">DISSIPATION</span><div id="dissipation-slider" class="slider"></div>
+            </div>
+        </div>
 
         <div id="info-blocks">
             <div class="info-block" id="love-wave-info">
@@ -33,6 +44,7 @@
         <canvas id="simulator"></canvas>
 
         <script type="text/javascript" src="js/Shared.js"></script>
+        <script type="text/javascript" src="js/UI.js"></script>
         <script type="text/javascript" src="js/Camera.js"></script>
         <script type="text/javascript" src="js/Simulation.js"></script>
         <script type="text/javascript" src="js/index.js"></script>

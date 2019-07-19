@@ -25,18 +25,64 @@ var QUAD_FRAGMENT_SOURCE = [
     '}',
 ].join('\n');
 
+var BaseModel = function() {
+    this.waveAmplitude = INITIAL_AMPLITUDE;
+    this.waveVelocity = INITIAL_VELOCITY;
+    this.wavePeriod = 1.0 / INITIAL_PERIOD;
+    this.waveDissipation = INITIAL_DISSIPATION;
+        
+    this.setVelocity = function (newVelocity) {
+        this.waveVelocity = newVelocity;
+    };
+
+    this.setPeriod = function (newPeriod) {
+        this.wavePeriod = 1.0 / newPeriod;
+    };
+
+    this.setDissipation = function (newDissipation) {
+        this.waveDissipation = newDissipation;
+    };
+    
+    this.getDisplacement = function(outDisplacement, coord, t) {
+        outDisplacement[X_INDEX] = 0.0;
+        outDisplacement[Y_INDEX] = 0.0;
+        outDisplacement[Z_INDEX] = 0.0;
+        outDisplacement[W_INDEX] = 0.0;
+
+        return outDisplacement;
+    }
+};
+
+var LoveWaveModel = function() {
+    BaseModel.call(this);
+    
+    this.getDisplacement = function(outDisplacement, coord, t) {
+        var depth = GEOMETRY_SIZE / 2.0 - coord[Y_INDEX];
+        var delta = depth / GEOMETRY_SIZE;
+
+        outDisplacement[X_INDEX] = this.waveAmplitude * Math.exp(-this.waveDissipation * delta) *
+            Math.cos(this.wavePeriod * coord[Z_INDEX] - this.waveVelocity * t);
+        outDisplacement[Y_INDEX] = 0.0;
+        outDisplacement[Z_INDEX] = 0.0;
+        outDisplacement[W_INDEX] = 0.0;
+
+        return outDisplacement;
+    }
+};
+
 var Simulator = function(canvas, width, height) {
     var canvas = canvas;
     canvas.width = width;
     canvas.height = height;
+    
+    var loveWaveModel = new LoveWaveModel();
+    var waveModels = [loveWaveModel];
+    
+    this.waveModel = loveWaveModel;
 
     var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
-    var currentTime = 0.0,
-        waveAmplitude = INITIAL_AMPLITUDE,
-        waveVelocity = INITIAL_VELOCITY,
-        wavePeriod = 1.0 / INITIAL_PERIOD,
-        waveDissipation = INITIAL_DISSIPATION;
+    var currentTime = 0.0;
 
     gl.clearColor.apply(gl, CLEAR_COLOR);
     gl.enable(gl.DEPTH_TEST);
@@ -193,15 +239,19 @@ var Simulator = function(canvas, width, height) {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeOutlineIndicesFront), gl.STATIC_DRAW);
 
     this.setVelocity = function (newVelocity) {
-        waveVelocity = newVelocity;
+        this.waveModel.setVelocity(newVelocity);
     };
 
     this.setPeriod = function (newPeriod) {
-        wavePeriod = 1.0 / newPeriod;
+        this.waveModel.setPeriod(newPeriod);
     };
 
     this.setDissipation = function (newDissipation) {
-        waveDissipation = newDissipation;
+        this.waveModel.setDissipation(newDissipation);
+    };
+    
+    this.setModel = function (newModel) {
+        this.waveModel = waveModels[newModel];
     };
 
     this.resize = function (width, height) {
@@ -219,19 +269,6 @@ var Simulator = function(canvas, width, height) {
 
         return outCoord;
     }
-
-    this.getDisplacement = function(outDisplacement, coord, t) {
-        var depth = GEOMETRY_SIZE / 2.0 - coord[Y_INDEX];
-        var delta = depth / GEOMETRY_SIZE;
-
-        outDisplacement[X_INDEX] = waveAmplitude * Math.exp(-waveDissipation * delta) *
-            Math.cos(wavePeriod * coord[Z_INDEX] - waveVelocity * t);
-        outDisplacement[Y_INDEX] = 0.0;
-        outDisplacement[Z_INDEX] = 0.0;
-        outDisplacement[W_INDEX] = 0.0;
-
-        return outDisplacement;
-    }
     
     this.update = function(t) {
         var newCubeData = null;
@@ -244,7 +281,7 @@ var Simulator = function(canvas, width, height) {
         for (var zIndex = 0; zIndex < GEOMETRY_RESOLUTION * 5; zIndex += 1) {
             for (var xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
                 this.getCoord(coord, cubeDataTop, zIndex, xIndex);
-                this.getDisplacement(displacement, coord, t);
+                this.waveModel.getDisplacement(displacement, coord, t);
                 coordAdd(outputCoord, coord, displacement);
 
                 newCubeData.push(outputCoord[X_INDEX]);
@@ -262,7 +299,7 @@ var Simulator = function(canvas, width, height) {
         for (var zIndex = 0; zIndex < GEOMETRY_RESOLUTION * 5; zIndex += 1) {
             for (var xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
                 this.getCoord(coord, cubeDataLeft, zIndex, xIndex);
-                this.getDisplacement(displacement, coord, t);
+                this.waveModel.getDisplacement(displacement, coord, t);
                 coordAdd(outputCoord, coord, displacement);
 
                 newCubeData.push(outputCoord[X_INDEX]);
@@ -280,7 +317,7 @@ var Simulator = function(canvas, width, height) {
         for (var xIndex = 0; xIndex < GEOMETRY_RESOLUTION; xIndex += 1) {
             for (var yIndex = 0; yIndex < GEOMETRY_RESOLUTION; yIndex += 1) {
                 this.getCoord(coord, cubeDataFront, xIndex, yIndex);
-                this.getDisplacement(displacement, coord, t);
+                this.waveModel.getDisplacement(displacement, coord, t);
                 coordAdd(outputCoord, coord, displacement);
 
                 newCubeData.push(outputCoord[X_INDEX]);

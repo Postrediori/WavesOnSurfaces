@@ -51,7 +51,11 @@ var CAMERA_DISTANCE = 50.0,
     MAX_AZIMUTH = 1.5,
     MIN_ELEVATION = 0.0,
     MAX_ELEVATION = 1.25;
-
+    
+var DEFAULT_UI_COLOR = 'rgb(48, 113, 191)',
+    BUTTON_ACTIVE_COLOR = 'white',
+    BUTTON_COLOR = '#ffffff',
+    BUTTON_BACKGROUND = '#555555';
 /*
  * GL Routines
  */

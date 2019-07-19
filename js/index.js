@@ -18,7 +18,18 @@ var main = function () {
     var dissipationSlider = new Slider(document.getElementById('dissipation-slider'), 0.0, MAX_DISSIPATION, INITIAL_DISSIPATION, function (value) {
         simulator.setDissipation(value);
     });
-
+    
+    var buttons = new Buttons([
+        document.getElementById('wave-type-love')
+    ], function (index) {
+        simulator.setModel(index);
+    });
+        
+    velocitySlider.setColor(DEFAULT_UI_COLOR);
+    periodSlider.setColor(DEFAULT_UI_COLOR);
+    dissipationSlider.setColor(DEFAULT_UI_COLOR);
+    buttons.setColor(DEFAULT_UI_COLOR);
+    
     var camera = new Camera();
     var projectionMatrix = makePerspectiveMatrix(new Float32Array(16), FOV, MIN_ASPECT, NEAR, FAR);
     

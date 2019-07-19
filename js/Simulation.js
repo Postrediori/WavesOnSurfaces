@@ -53,6 +53,23 @@ var BaseModel = function() {
     }
 };
 
+var RayleighWaveModel = function() {
+    BaseModel.call(this);
+    
+    this.getDisplacement = function(outDisplacement, coord, t) {
+        var depth = GEOMETRY_SIZE / 2.0 - coord[Y_INDEX];
+        var delta = depth / GEOMETRY_SIZE;
+
+		var phi = this.wavePeriod * coord[Z_INDEX] - this.waveVelocity * t;
+        outDisplacement[X_INDEX] = 0.0;
+        outDisplacement[Y_INDEX] = this.waveAmplitude * Math.exp(-this.waveDissipation * delta) * Math.cos(phi);
+        outDisplacement[Z_INDEX] = this.waveAmplitude * Math.exp(-this.waveDissipation * delta) * Math.sin(phi);
+        outDisplacement[W_INDEX] = 0.0;
+
+        return outDisplacement;
+    }
+};
+
 var LoveWaveModel = function() {
     BaseModel.call(this);
     
@@ -76,7 +93,8 @@ var Simulator = function(canvas, width, height) {
     canvas.height = height;
     
     var loveWaveModel = new LoveWaveModel();
-    var waveModels = [loveWaveModel];
+    var rayleighWaveModel = new RayleighWaveModel();
+    var waveModels = [loveWaveModel, rayleighWaveModel];
     
     this.waveModel = loveWaveModel;
 

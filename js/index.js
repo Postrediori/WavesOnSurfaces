@@ -20,7 +20,8 @@ var main = function () {
     });
     
     var buttons = new Buttons([
-        document.getElementById('wave-type-love')
+        document.getElementById('wave-type-love'),
+        document.getElementById('wave-type-rayleigh')
     ], function (index) {
         simulator.setModel(index);
     });

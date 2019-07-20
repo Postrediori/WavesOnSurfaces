@@ -257,15 +257,21 @@ var Simulator = function(canvas, width, height) {
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeOutlineIndicesFront), gl.STATIC_DRAW);
 
     this.setVelocity = function (newVelocity) {
-        this.waveModel.setVelocity(newVelocity);
+        for (var i = 0; i < waveModels.length; i++) {
+            waveModels[i].setVelocity(newVelocity);
+        }
     };
 
     this.setPeriod = function (newPeriod) {
-        this.waveModel.setPeriod(newPeriod);
+        for (var i = 0; i < waveModels.length; i++) {
+            waveModels[i].setPeriod(newPeriod);
+        }
     };
 
     this.setDissipation = function (newDissipation) {
-        this.waveModel.setDissipation(newDissipation);
+        for (var i = 0; i < waveModels.length; i++) {
+            waveModels[i].setDissipation(newDissipation);
+        }
     };
     
     this.setModel = function (newModel) {

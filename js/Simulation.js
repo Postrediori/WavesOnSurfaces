@@ -56,14 +56,61 @@ var BaseModel = function() {
 var RayleighWaveModel = function() {
     BaseModel.call(this);
     
-    this.getDisplacement = function(outDisplacement, coord, t) {
-        var depth = GEOMETRY_SIZE / 2.0 - coord[Y_INDEX];
-        var delta = depth / GEOMETRY_SIZE;
-
-		var phi = this.wavePeriod * coord[Z_INDEX] - this.waveVelocity * t;
+    // Mechanical parameters
+    var E = 1.0; // Imaginary material
+    var rho = 10.0; // Imaginary material
+    var nu = 0.3; // Let's stick to classics
+    
+    // Lame' parameters
+    var lambda = nu * E / ((1 + nu) * (1 - 2 * nu));
+    var mu = E / (2 * (1 + nu));
+    
+    // Approx. solution of Rayleigh wave
+    var thetaR = (0.87 + 1.12 * nu) / (1 + nu);
+    
+    this.getDisplacement = function(outDisplacement, coord0, t) {
+        var scale = this.wavePeriod / 5.0;
+        var omega = 2.5;
+        var A = this.waveAmplitude * scale;
+        
+        var coord = [
+            coord0[X_INDEX] * scale,
+            coord0[Y_INDEX] * scale,
+            coord0[Z_INDEX] * scale * 0.25,
+            coord0[W_INDEX] * scale
+        ];
+        
+        // Depth of a point
+        var depth = GEOMETRY_SIZE / 2.0 * scale - coord[Y_INDEX];
+        var delta = depth / GEOMETRY_SIZE * this.waveDissipation * 2.;
+        
+        // Rayleigh wave numbers for longitudinal and transversal waves
+        var cL = omega * Math.sqrt(rho / (lambda  + 2 * mu));
+        var cT = omega * Math.sqrt(rho / mu);
+        
+        // Rayleigh wave velocity
+        var c = cT / Math.sqrt(thetaR);
+        
+        var qR = Math.sqrt(c * c - cL * cL);
+        var sR = Math.sqrt(c * c - cT * cT);
+        
+        var amplitude = [
+            0.0,
+            A * c,
+            A * qR
+        ];
+        
+        var dissipation = [
+            0.0,
+            Math.exp(-qR * delta) - 2 * qR * sR / (cT * cT) * Math.exp(-sR * delta),
+            Math.exp(-qR * delta) - 2 * c * c / (2 * c * c - cT * cT) * Math.exp(-sR * delta)
+        ];
+        
+        var phi = c * coord[Z_INDEX] - omega * t * this.waveVelocity;
+        
         outDisplacement[X_INDEX] = 0.0;
-        outDisplacement[Y_INDEX] = this.waveAmplitude * Math.exp(-this.waveDissipation * delta) * Math.cos(phi);
-        outDisplacement[Z_INDEX] = this.waveAmplitude * Math.exp(-this.waveDissipation * delta) * Math.sin(phi);
+        outDisplacement[Y_INDEX] = amplitude[Y_INDEX] * dissipation[Y_INDEX] * Math.cos(phi - Math.PI / 2.0);
+        outDisplacement[Z_INDEX] = amplitude[Z_INDEX] * dissipation[Z_INDEX] * Math.cos(phi);
         outDisplacement[W_INDEX] = 0.0;
 
         return outDisplacement;
